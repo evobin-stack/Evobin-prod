@@ -12,12 +12,21 @@ UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 
 try:
-    if os.path.exists(MODEL_PATH):
-        model = YOLO(MODEL_PATH)
-    else:
-        model = None
+    print(f"MODEL_PATH: {MODEL_PATH}")
+    print(f"MODEL EXISTS: {os.path.exists(MODEL_PATH)}")
+
+    if not os.path.exists(MODEL_PATH):
+        raise FileNotFoundError(f"Model not found: {MODEL_PATH}")
+
+    model = YOLO(MODEL_PATH)
+
+    print("YOLO MODEL LOADED SUCCESSFULLY")
+    print("MODEL NAMES:", model.names)
+
 except Exception as e:
-    model = None
+    print("❌ YOLO MODEL LOAD FAILED")
+    print(f"Error: {type(e).__name__}: {e}")
+    raise
 
 YOLO_DEVICE_MAP = {
     "laptop": "Laptop",
